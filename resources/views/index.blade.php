@@ -64,48 +64,6 @@
   </div>
 
 </div>
-<!-- search -->
-<form action="{{ route('search-results') }}" method="GET">
-  <input type="text" id="search-input" name="searchbox" placeholder="Search">
-  <button type="submit">Search</button>
-</form>
-<div id="search-results"></div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- realtime search call -->
-<script>
-
-  $(function() {
-    var searchInput = $('#search-input');
-    var searchResults = $('#search-results');
-    searchInput.on('input', function() {
-      var query = searchInput.val();
-      if (query.length >= 3) {
-
-        $.ajax({
-          url: '{{ route("realsearch") }}',
-          data: { q: query },
-          success: function(response) {
-            searchResults.html(response);
-          }
-        });
-      } else {
-
-
-        searchResults.empty();
-      }
-    });
-  });
-</script>
-
-
-<!-- realtime search call end -->
-
-
-
-<!-- search end -->
-
 
 <!-- movie slider start  -->
 <h1 class="movieScroolHeader mt-2">New Releases</h1>

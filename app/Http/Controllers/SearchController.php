@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\movie_info;
-
+use App\Models\user;
 class SearchController extends Controller
 {
 
@@ -32,10 +32,47 @@ class SearchController extends Controller
         return $resultsHtml;
     }
 
-    public function searchbar(Request $request)
+    public function searchbar($ss)
     {
-        $searchbar = $request->input('searchbar');
+        
+        $movies = movie_info::where('movie_name', 'LIKE', '%' . $ss . '%')->get();
+        $people=user::where('name', 'LIKE', '%' . $ss . '%')->get();
+        session(['searchResult' => $movies]);
+        session(['searchResultPeople' => $people]);
 
-        return response()->json(['status' => 'ok']);
+        
+        return response()->json($movies);
+
+
     }
+    public function searchRealtime($rr)
+    {
+        
+        $movies = movie_info::where('movie_name', 'LIKE', '%' . $rr . '%')->get();
+        $resultsHtml = '';
+        foreach ($movies as $movie) {
+            $resultsHtml .= '<div class="search-result">' . $movie->movie_name . '</div>';
+            
+        }
+        return $resultsHtml;
+
+
+    }
+
+    function searchAllData(){
+
+        $res=session('searchResult');
+        $res1=session('searchResultPeople');
+
+
+        $data=[];
+        $data[0]=$res;
+        $data[1]=$res1;
+        
+        return response()->json($data);
+
+    }
+
+    
 }
+
